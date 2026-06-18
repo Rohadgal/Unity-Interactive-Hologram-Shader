@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class EnemyDamageController : MonoBehaviour
+public class PotionHealController : MonoBehaviour
 {
-    [SerializeField] private float damage = 10f;
-    bool canReceiveDamage = true;
+    [SerializeField] private float heal = 10f;
+    bool canHeal = true;
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player") {
@@ -13,10 +13,10 @@ public class EnemyDamageController : MonoBehaviour
         HealthSystem health =
             other.GetComponent<HealthSystem>();
 
-        if (health != null && canReceiveDamage)
+        if (health != null && canHeal)
         {
-            canReceiveDamage = false;
-            health.TakeDamage(damage);
+            health.Heal(heal);
+            canHeal = false;
         }
     }
     
@@ -26,6 +26,6 @@ public class EnemyDamageController : MonoBehaviour
             return;
         }
         
-        canReceiveDamage = true;
+        canHeal = true;
     }
 }
