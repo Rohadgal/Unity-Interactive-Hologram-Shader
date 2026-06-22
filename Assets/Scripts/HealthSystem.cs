@@ -1,7 +1,4 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -16,27 +13,34 @@ public class HealthSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //currentHealth = maxHealth;  // Initialize health to max at the start
+        currentHealth = maxHealth;  // Initialize health to max at the start
         
-        Color greenColor = new Color(0f, 1f, 0f); // Red color
+        Color greenColor = new Color(1f, 0f, 1f); // Magenta color
         hologramMaterial.SetColor("_Color", greenColor);
         
         UpdateVisuals();
     }
 
+    //********************************///////////*********************************************************//
+    //                                UPDATE SHADER                  
+    //********************************///////////*********************************************************//
     // Update is called once per frame
     void UpdateVisuals()
     {
-        float healthPercent = currentHealth / maxHealth; 
-        
-        float intensity = Mathf.Lerp(60f, 1f, healthPercent); // 40 -> 0       10-> .8   1 -> 1 // the less health, the more intense the hologram effect
+        float healthPercent = currentHealth / maxHealth; //  0 / 100 = 0   50 / 100 = .5   100 / 100 = 1 
         
         float speed = Mathf.Lerp(20f, 1f, healthPercent);
+        //   0     .25    .5     .75     1     -  HEALTH PERCENTAGE
+        //  20     15     10      5      1     -  SPEED     
+        float intensity = Mathf.Lerp(60f, 1f, healthPercent);  // the LOWER the health, the HIGHER the brightness 
+        //   0     .25    .5     .75     1     -  HEALTH PERCENTAGE
+        //  20     15     10      5      1     -  INTENSITY     
         
-        //hologramMaterial.SetFloat("_Intensity", intensity);
-        //hologramMaterial.SetFloat("_Speed", speed);
+        hologramMaterial.SetFloat("_Speed", speed);
+        hologramMaterial.SetFloat("_Intensity", intensity);
+  
     }
-    
+    //********************************///////////*********************************************************//
     public void TakeDamage(float damage)
     {
         Debug.Log("Take Damage");
@@ -50,7 +54,7 @@ public class HealthSystem : MonoBehaviour
         
         if (currentHealth <= 0f)
         {
-            Die();
+            //Die();
         }
     }
     
